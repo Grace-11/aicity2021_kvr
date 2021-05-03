@@ -6,17 +6,7 @@ import numpy as np
 from utils import *
 
 def get_loss_model(cfg):
-        return nn.CrossEntropyLoss().cuda()
-
-def cross_entropy_with_multi_targets(input_probs, targets):
-    loss = 0.
-    count = 0
-    for i in input_probs:
-        for t in targets:
-            loss += torch.log(torch.sum(torch.exp(i))) - i[t]
-            count += 1
-    loss = loss / count
-    return loss
+    return nn.CrossEntropyLoss().cuda()
 
 def get_optimizer(cfg, params):
     if cfg["optimizer"]["type"] == "adam":
@@ -46,39 +36,21 @@ class CarColor(nn.Module):
         self.resnet50.fc = nn.Linear(num_features, num_class) # length of color classes
         self.loss_model = get_loss_model(self.cfg)
 
-        if self.cfg["train"]["loss_calculator"] == "cross_entropy_by_one_hot_enc":
-            self.compute_loss = self.compute_loss_by_one_hot_enc
-
-        elif self.cfg["train"]["loss_calculator"] == "cross_entropy_by_ans_prob_enc":
-            self.compute_loss = self.compute_loss_by_ans_prob_enc
-
     def forward(self, track):
         return self.resnet50(track)
 
-    def compute_loss_by_one_hot_enc(self, track):
+    def compute_loss(self, track):
         loss = 0.
-        for i, t in enumerate(track['crops']):
-            l = 0.
-            out = self.forward(t)
+        out = self.forward(track['crop'])
 
-            for k, v in track['color'][i].items():
-                target = torch.LongTensor([k] * len(out), device=torch.device('cuda:0'))
-                l += self.loss_model(out, target) * v
-            loss += l
-        loss /= len(track['crops'])
-        return loss
-
-    def compute_loss_by_ans_prob_enc(self, track):
-        loss = 0.
-        for i, t in enumerate(track['crops']):
+        for index, o in enumerate(out):
+            o = torch.unsqueeze(o, dim=0)
             l = 0.
-            out = self.forward(t)
-            pred = F.log_softmax(out, dim=-1)
-            t_pred = torch.transpose(pred, 0, 1)
-            for k, v in track['color'][i].items():
-                l += (t_pred[k] * -1 * v).mean()
+            for k, v in track['color'][index].items():
+                target = torch.LongTensor([k]).cuda()
+                l += self.loss_model(o, target) * v
             loss += l
-        loss /= len(track['crops'])
+        loss /= len(track['crop'])
         return loss
 
     def compute_color_list(self, query):
@@ -114,39 +86,21 @@ class CarType(nn.Module):
         self.resnet50.fc = nn.Linear(num_features, num_class) # length of model classes
         self.loss_model = get_loss_model(self.cfg)
 
-        if self.cfg["train"]["loss_calculator"] == "cross_entropy_by_one_hot_enc":
-            self.compute_loss = self.compute_loss_by_one_hot_enc
-
-        elif self.cfg["train"]["loss_calculator"] == "cross_entropy_by_ans_prob_enc":
-            self.compute_loss = self.compute_loss_by_ans_prob_enc
-
     def forward(self, track):
         return self.resnet50(track)
 
-    def compute_loss_by_one_hot_enc(self, track):
+    def compute_loss(self, track):  # need to check if it's correct !!!!!!!!!!!!!!!!!!!
         loss = 0.
-        for i, t in enumerate(track['crops']):
-            l = 0.
-            out = self.forward(t)
+        out = self.forward(track['crop'])
 
-            for k, v in track['type'][i].items():
-                target = torch.LongTensor([k] * len(out), device=torch.device('cuda:0'))
-                l += self.loss_model(out, target) * v
-            loss += l
-        loss /= len(track['crops'])
-        return loss
-
-    def compute_loss_by_ans_prob_enc(self, track):
-        loss = 0.
-        for i, t in enumerate(track['crops']):
+        for index, o in enumerate(out):
+            o = torch.unsqueeze(o, dim=0)
             l = 0.
-            out = self.forward(t)
-            pred = F.log_softmax(out, dim=-1)
-            t_pred = torch.transpose(pred, 0, 1)
-            for k, v in track['type'][i].items():
-                l += (t_pred[k] * -1 * v).mean()
+            for k, v in track['type'][index].items():
+                target = torch.LongTensor([k]).cuda()
+                l += self.loss_model(o, target) * v
             loss += l
-        loss /= len(track['crops'])
+        loss /= len(track['crop'])
         return loss
 
     def compute_type_list(self, query):
@@ -169,6 +123,3 @@ class CarType(nn.Module):
         for tp in types:
             score += probs[tp]
         return score
-
-
-

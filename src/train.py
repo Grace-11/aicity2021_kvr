@@ -122,14 +122,13 @@ def train(args):
             # 1. train car color model
             optimizer_color.zero_grad()
             loss_color = model_color.compute_loss(batch)
-            #loss_2 = model_color.compute_loss_by_one_hot_enc(batch)
 
             if not (math.isnan(loss_color.data.item())
                     or math.isinf(loss_color.data.item())
                     or loss_color.data.item() > cfg["train"]["loss_clip_value"]):
                         loss_color.backward()
                         optimizer_color.step()
-                        losses_color += loss_color.item() * batch['crops'].size(0)
+                        losses_color += loss_color.item() * batch['crop'].size(0)
 
             # 2. train car type model
             optimizer_type.zero_grad()
@@ -140,7 +139,7 @@ def train(args):
                     or loss_type.data.item() > cfg["train"]["loss_clip_value"]):
                         loss_type.backward()
                         optimizer_type.step()
-                        losses_type += loss_type.item() * batch['crops'].size(0)
+                        losses_type += loss_type.item() * batch['crop'].size(0)
 
             time_current = time.time()
             elapse_b = time_current - time_b_start
