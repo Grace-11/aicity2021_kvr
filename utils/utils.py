@@ -1,9 +1,9 @@
 import json
 import os
 import re
-from stop_words import ENGLISH_STOP_WORDS as ESW
-from car_colors import COLORS
-from car_types import TYPES
+from utils.stop_words import ENGLISH_STOP_WORDS as ESW
+from utils.car_colors import COLORS
+from utils.car_types import TYPES
 from collections import Counter
 
 import cv2
