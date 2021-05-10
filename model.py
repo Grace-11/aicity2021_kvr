@@ -89,7 +89,7 @@ class CarType(nn.Module):
     def forward(self, track):
         return self.resnet50(track)
 
-    def compute_loss(self, track):  # need to check if it's correct !!!!!!!!!!!!!!!!!!!
+    def compute_loss(self, track):
         loss = 0.
         out = self.forward(track['crop'])
 
