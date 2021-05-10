@@ -24,6 +24,7 @@ https://drive.google.com/file/d/1rPw-lKdJgaqtvUEcECXBMZl_UiWY3fpJ/view?usp=shari
 We used track 5 data as well as track 3 data.
 
 (4) configuration parameters and pre-trained models; 
+
 (5) detailed description of how to run training and testing with the input of the downloaded packages from our website.
 
 The result of this repository code has not validated by the evaluation server.
