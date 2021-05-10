@@ -15,8 +15,8 @@ import numpy as np
 import random
 import os
 
-from utils import motion_detection, motion_calculation
-from json_formatter import NumpyArrayEncoder
+from utils.utils import motion_detection, motion_calculation
+from utils.json_formatter import NumpyArrayEncoder
 
 def infer(args):
     # Read configuation json file
@@ -28,7 +28,7 @@ def infer(args):
     with open(cfg["data"]["test_query_json"], "r") as f:
         queries = json.load(f)
 
-    vicinity = Vicinity(json_path='data/test-vicinity.json', cfg=cfg)
+    vicinity = Vicinity(json_path='vicinity/test-vicinity.json', cfg=cfg)
 
     # save and load files(??)
     # if os.path.isdir(cfg["eval"]["continue"]):
@@ -107,8 +107,8 @@ def infer(args):
 
                 if cfg["eval"]["variable_weights"]:
                     weight_overall = cfg["eval"]["overall_weight"]
-                    motion_track = motion_calculation(track_id)
-             	    motion_score = np.dot(motion_nl, motion_track)
+                    motion_track = motion_calculation(track_id, cfg["eval"]["turn_threshold"])
+                    motion_score = np.dot(motion_nl, motion_track)
                     vicinity_score, vicinity_count = vicinity.calculation(track_id, q, model_color, model_type)
                     motvic_nl_count = motion_nl + vicinity_count
                     agg = np.sum(motvic_nl_count)
@@ -147,8 +147,8 @@ def infer(args):
 
                     if cfg["eval"]["variable_weights"]:
                         weight_overall = cfg["eval"]["overall_weight"]
-                        motion_track = motion_calculation(track_id)
-             	        motion_score = np.dot(motion_nl, motion_track)
+                        motion_track = motion_calculation(track_id, cfg["eval"]["turn_threshold"])
+                        motion_score = np.dot(motion_nl, motion_track)
                         vicinity_score, vicinity_count = vicinity.calculation(track_id, q, model_color, model_type)
                         motvic_nl_count = motion_nl + vicinity_count
                         agg = np.sum(motvic_nl_count)

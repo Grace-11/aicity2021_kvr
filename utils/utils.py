@@ -227,11 +227,11 @@ def motion_detection(nls):
     return [right, left, up, down, stop]
 
 def motion_calculation(track_id, threshold):
-    if os.path.exists('data/test-motions.json'):
-        with open("data/test-motions.json", 'r') as file:
+    if os.path.exists('motion/test-motions.json'):
+        with open("motion/test-motions.json", 'r') as file:
             motion_data = json.load(file)
     else:
-        with open("../data/test-motions.json", 'r') as file:
+        with open("../motion/test-motions.json", 'r') as file:
             motion_data = json.load(file)
 
     turn = motion_data[track_id]['turn']

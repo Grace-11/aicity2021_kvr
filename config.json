@@ -34,8 +34,8 @@
 
     "train":{
         "num_epochs" : 10000,
-        "batch_size" : 8,
-        "num_workers" : 2,
+        "batch_size" : 32,
+        "num_workers" : 8,
         "loss_clip_value" : 10.0
     },
 
@@ -50,13 +50,12 @@
         "metalog_color"     : "./metalog_color/",
         "metalog_type"      : "./metalog_type/",
         
-        "use_accelerator"   : false,
-        
+        "use_accelerator"   : true,
+
         "variable_weights"  : true,
         "overall_weight"    : 1.0,
-        
+
         "turn_threshold"    : 20
-        
     },
 
     "seed" : 777
