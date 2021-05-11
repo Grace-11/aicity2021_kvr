@@ -21,7 +21,7 @@ To train color and type of vehicles, we used a ResNet50 pre-trained on ImageNet 
 * To test from scratch, type this cmd in terminal: infer.py -c config.json
 
 ## How to reproduce the result
-We used this checkpoint file to test.
+We used [this checkpoint file] to test.
 
 [this checkpoint file]: https://drive.google.com/file/d/1pbfMF7n5Jgnz-jT2C6OFbCFAJFyumrCu/view?usp=sharing
 
@@ -29,12 +29,6 @@ We used [these files] for test acceleration.
 
 [these files]: https://drive.google.com/file/d/1rPw-lKdJgaqtvUEcECXBMZl_UiWY3fpJ/view?usp=sharing
 
-===============
-Or leave it empty and use the [link text itself].
-
-[link text itself]: http://www.reddit.com
-
-===========
 
 ## GPU spec
 TITAN Xp (Memory: 12GB)
