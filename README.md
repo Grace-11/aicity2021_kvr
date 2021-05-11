@@ -8,8 +8,10 @@ train.py -c config.json
 
 
 * Ckpt file @ epoch 910 : We used this file for test.
+
 https://drive.google.com/file/d/1pbfMF7n5Jgnz-jT2C6OFbCFAJFyumrCu/view?usp=sharing
 [GPU spec]
+
 TITAN Xp (Memory: 12GB)
 
 (2) testing code; 
@@ -17,6 +19,7 @@ TITAN Xp (Memory: 12GB)
 infer.py -c config.json
 
 * files for test acceleration
+
 https://drive.google.com/file/d/1rPw-lKdJgaqtvUEcECXBMZl_UiWY3fpJ/view?usp=sharing
 
 (3) additional annotations (on the training sets only); 
